@@ -1,4 +1,11 @@
-#include <bits/stdc++.h>
+โค้ดที่คุณให้มามีข้อผิดพลาดเกี่ยวกับการประกาศตัวแปรซ้ำ (Redeclaration) และการใช้ Format Specifier ของ printf ไม่ตรงกับประเภทตัวแปรในฟังก์ชันหลัก (main)
+ผมได้ทำการแก้ไขจุดที่ทำให้โค้ดคอมไพล์ไม่ผ่าน ดังนี้ครับ:
+
+นำการประกาศ vi r ออก เพราะมีการประกาศ vll r; ไว้ก่อนหน้านี้แล้ว รวมถึงการที่ฟังก์ชัน primeFactors(N) จะคืนค่าเป็น vll (เวกเตอร์ของ long long) เท่านั้น
+แก้ไข %d เป็น %lld ในบล็อกสุดท้ายเพื่อให้แสดงผลค่าตัวเลข long long แบบไม่เกิดการเตือนหรือข้อผิดพลาด
+
+นี่คือโค้ดที่แก้ไขแล้วครับ:
+cpp#include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
@@ -107,7 +114,7 @@ ll EulerPhi(ll N) {
 int main() {
   // first part: the Sieve of Eratosthenes
   sieve(10000000);                               // up to 10^7 (<1s)
-  printf("%lld\n", p.back());               // primes.back() = 9999991
+  printf("%lld\n", p.back());                    // primes.back() = 9999991
   for (int i = p.back()+1; ; ++i)
     if (isPrime(i)) {
       printf("The next prime beyond the last prime generated is %d\n", i);
@@ -146,28 +153,22 @@ int main() {
   printf("\n");
 
   
-  vi r = primeFactors((1LL<<31)-1);              // slowest, Mersenne prime
+  r = primeFactors((1LL<<31)-1);                 // slowest, Mersenne prime
   for (auto &pf : r)
-    printf("> %d\n", pf);
+    printf("> %lld\n", pf);
+    
   r = primeFactors(136117223861LL);              // slow, large prime
   for (auto &pf : r)
-    printf("> %d\n", pf);                        // 104729*1299709
+    printf("> %lld\n", pf);                      // 104729*1299709
+    
   r = primeFactors(142391208960LL);              // faster, large composite
   for (auto &pf : r)
-    printf("> %d\n", pf);                        // 2^10*3^4*5*7^4*11*13
-  // r = primeFactors(99999820000081LL);            // the limit: 9999991^2
-  // for (auto &pf : r)
-  //   printf("> %d\n", pf);
-  // printf("\n");
+    printf("> %lld\n", pf);                      // 2^10*3^4*5*7^4*11*13
 
   r = primeFactors(9999973LL*9999973LL);         // 9999973^2, the limit
   for (auto &pf : r)
-    printf("> %d\n", pf);
+    printf("> %lld\n", pf);
   printf("\n");
-  // r = primeFactors(9999991LL*9999991LL);         // 9999991^2, first crash
-  // for (auto &pf : r)
-  //   printf("> %d\n", pf);
-  // printf("\n");
 
   // third part: functions involving prime factors
   printf("numPF(%d) = %d\n", 60, numPF(60));   // 2^2 * 3^1 * 5^1 => 4
